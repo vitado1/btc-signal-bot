@@ -24,7 +24,16 @@ def get_price_data():
     volumes = [v[1] for v in data["total_volumes"][-15:]]
     return prices, volumes
 
+def get_price_bingx():
+    url = "https://open-api.bingx.com/openApi/spot/v1/ticker/price"
+    params = {"symbol": "BTC-USDT"}
+    response = requests.get(url, params=params)
+    data = response.json()
 
+    if data.get("code") != 0 or "price" not in data.get("data", {}):
+        raise ValueError(f"BingX no devolvió datos válidos: {data}")
+
+    return float(data["data"]["price"])
 
 def calculate_rsi(prices):
     gains = []
@@ -47,10 +56,12 @@ def calculate_rsi(prices):
 def run_bot():
     try:
         prices, volumes = get_price_data()
+        bingx_price = get_price_bingx()
         rsi = calculate_rsi(prices)
         trend = "alcista" if prices[-1] > prices[0] else "bajista"
         payload = {
-            "precio": round(prices[-1], 2),
+            # "precio": round(prices[-1], 2), # Precio CoinGecko
+            "precio": round(bingx_price, 2),   # Precio de BingX
             "rsi": rsi,
             "volumen": round(volumes[-1], 2),
             "tendencia": trend
