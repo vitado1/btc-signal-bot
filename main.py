@@ -28,6 +28,10 @@ def get_price_bingx():
     url = "https://open-api.bingx.com/openApi/spot/v1/ticker/price"
     params = {"symbol": "BTC-USDT"}
     response = requests.get(url, params=params)
+
+    print(f"🟡 Código HTTP: {response.status_code}")
+    print(f"🟡 Respuesta de BingX: {response.text}")  # Añadido para ver qué devuelve realmente
+
     data = response.json()
 
     if data.get("code") != 0 or "price" not in data.get("data", {}):
