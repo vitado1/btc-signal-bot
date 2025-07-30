@@ -58,7 +58,7 @@ def calculate_rsi(prices):
 @app.route("/")
 def run_bot():
     try:
-        prices, volumes = get_price_data()
+        volumes = get_price_data()
         bingx_price = get_price_bingx()
         rsi = calculate_rsi(prices)
         trend = "alcista" if prices[-1] > prices[0] else "bajista"
