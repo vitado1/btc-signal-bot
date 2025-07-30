@@ -24,7 +24,7 @@ def get_price_data():
 
 def get_price_bingx():
     # Intenta usar el endpoint oficial primero
-    url = "https://open-api.bingx.com/openApi/spot/v1/ticker/price?symbol=BTC-USDT"
+    url = "https://open-api.bingx.com/openApi/swap/v2/quote/price?symbol=BTC-USDT"
     response = requests.get(url)
     data = response.json()
 
